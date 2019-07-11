@@ -10,8 +10,18 @@
             android:name="com.example.demo_day1.fragments.HomeFragment"
             android:label="Home Fragment"
             tools:layout="@layout/fragment_home" >
-        <action android:id="@+id/action_homeFragment_to_firstFragment" app:destination="@id/firstFragment"/>
-        <action android:id="@+id/action_homeFragment_to_secondFragment" app:destination="@id/secondFragment"/>
+        <action
+                android:id="@+id/action_homeFragment_to_firstFragment"
+                app:destination="@id/firstFragment"
+                app:popUpTo="@+id/homeFragment"
+                app:popUpToInclusive="true"
+        />
+        <action
+                android:id="@+id/action_homeFragment_to_secondFragment"
+                app:destination="@id/secondFragment"
+                app:popUpTo="@+id/homeFragment"
+                app:popUpToInclusive="true"
+        />
         <action android:id="@+id/action_homeFragment_to_thirdFragment" app:destination="@id/thirdFragment"/>
         <action android:id="@+id/action_homeFragment_to_fourthFragment" app:destination="@id/fourthFragment"/>
     </fragment>

@@ -21,8 +21,8 @@ class FirstFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_first, container, false)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDetach() {
+        super.onDetach()
         (activity as AppCompatActivity).supportActionBar!!.show()
 
     }
