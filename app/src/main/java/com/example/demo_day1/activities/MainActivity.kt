@@ -14,10 +14,10 @@ import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    lateinit var toolbar: Toolbar
-    lateinit var drawerLayout: DrawerLayout
-    lateinit var navController: NavController
-    lateinit var navigationView: NavigationView
+    private lateinit var toolbar: Toolbar
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var navController: NavController
+    private lateinit var navigationView: NavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (menuItem.itemId) {
             R.id.first -> navController.navigate(R.id.firstFragment)
             R.id.second -> navController.navigate(R.id.secondFragment)
-            R.id.third -> navController.navigate(R.id.thirdFragment)
+            //R.id.third -> navController.navigate(R.id.thirdFragment)
             R.id.fourth -> navController.navigate(R.id.fourthFragment)
             else -> navController.navigate(R.id.homeFragment)
 

@@ -33,6 +33,7 @@
         android:textStyle="bold" app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="16dp" android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@+id/imageView3" android:id="@+id/textView2"/>
+    
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputMobile"
         style="@style/parent.TextLayout"
@@ -67,7 +68,8 @@
         android:src="@drawable/ic_login_button"
         android:layout_gravity="right" android:layout_marginTop="12dp"
         app:layout_constraintTop_toBottomOf="@+id/textInputPassword"
-        app:layout_constraintEnd_toEndOf="@+id/textInputPassword" android:id="@+id/imageView4"/>
+        app:layout_constraintEnd_toEndOf="@+id/textInputPassword"
+        android:id="@+id/login_next"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -77,7 +79,7 @@
         android:textSize="12sp"
         android:text="Dont have an account ? Register Now."
         android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@+id/imageView4" app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_next" app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toBottomOf="parent"/>
 

@@ -6,12 +6,12 @@ import android.os.Bundle
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.demo_day1.R
+import com.example.demo_day1.utils.PREF_NAME
 
 class LoginSignupActivity : AppCompatActivity() {
 
-    lateinit var navController: NavController
+    private lateinit var navController: NavController
     private var PRIVATE_MODE = 0
-    private val PREF_NAME = "com.example.demo_day1.PREFERENCE_FILE_KEY"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

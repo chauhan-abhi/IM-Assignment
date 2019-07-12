@@ -56,17 +56,6 @@ class ContactListAdapter(
             email.text = contact.personEmail
             personImageView.loadImg(contact.profileImageUrl)
             callButton.setOnClickListener {
-                if (ActivityCompat.checkSelfPermission(
-                        view.context,
-                        CALL_PHONE
-                    ) != PackageManager.PERMISSION_GRANTED
-                ) {
-                    ActivityCompat.requestPermissions(
-                        view.context as MainActivity,
-                        arrayOf(CALL_PHONE),
-                        0
-                    )
-                }
 
                 val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + contact.contactNumber))
                 view.context.startActivity(intent)
