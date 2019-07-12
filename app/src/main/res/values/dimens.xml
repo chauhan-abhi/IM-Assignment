@@ -20,6 +20,10 @@
     <dimen name="image_width">120dp</dimen>
     <dimen name="image_final_width">32dp</dimen>
     <dimen name="spacing_normal">16dp</dimen>
-
+    
+    <!-- Login Signup dimens-->
+    <dimen name="headerTextSize">22sp</dimen>
+    <dimen name="newsMoreTextSize">16sp</dimen>
+    <dimen name="signup_text_margin_top">5dp</dimen>
 
 </resources>
