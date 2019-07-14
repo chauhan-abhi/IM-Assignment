@@ -24,6 +24,7 @@ class LoginSignupActivity : AppCompatActivity() {
 
     private fun setUpNavigation() {
         val sharedPref: SharedPreferences = getSharedPreferences(PREF_NAME, PRIVATE_MODE)
+
         if (sharedPref.getBoolean(PREF_NAME, false)) {
             // open login
             navController.navigate(R.id.loginFragment)

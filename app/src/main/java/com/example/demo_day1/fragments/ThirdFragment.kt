@@ -2,8 +2,11 @@ package com.example.demo_day1.fragments
 
 
 import android.app.Activity
+import android.content.ContentValues
 import android.content.SharedPreferences
+import android.database.sqlite.SQLiteOpenHelper
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,6 +18,8 @@ import androidx.navigation.Navigation
 import kotlinx.android.synthetic.main.fragment_third.*
 
 import com.example.demo_day1.R
+import com.example.demo_day1.db.RegisterUserDbHelper
+import com.example.demo_day1.db.UserContract
 import com.example.demo_day1.utils.*
 
 /**
@@ -23,6 +28,7 @@ import com.example.demo_day1.utils.*
 class ThirdFragment : Fragment() {
 
     lateinit var navController: NavController
+    lateinit var dbHelper: SQLiteOpenHelper
     private val PREF_NAME = "com.example.demo_day1.PREFERENCE_FILE_KEY"
     private var fullName = ""
     private var email = ""
@@ -45,20 +51,13 @@ class ThirdFragment : Fragment() {
         next.setOnClickListener {
             validateFields()
         }
+        dbHelper = RegisterUserDbHelper(context)
     }
 
     private fun validateFields() {
         if (validateFullName() && validateEmail() && validateMobile() && validatePassword()) {
             // save data in shared pref
 
-            val sharedPref: SharedPreferences = activity!!.getSharedPreferences(PREF_NAME, PRIVATE_MODE)
-            val editor = sharedPref.edit()
-            editor.putBoolean(PREF_NAME, true)
-            editor.putString(FULL_NAME_KEY, fullName )
-            editor.putString(EMAIL_KEY, email)
-            editor.putString(MOBILE_KEY, mobile)
-            editor.putString(PASSWORD_KEY, password)
-            editor.apply()
             val bundle = bundleOf(
                 FULL_NAME_KEY to fullName,
                 EMAIL_KEY to email,
@@ -66,10 +65,36 @@ class ThirdFragment : Fragment() {
                 PASSWORD_KEY to password
             )
             // open login
-
+            saveInDb()
             navController.navigate(R.id.loginFragment, bundle)
 
         }
+    }
+
+    private fun saveInSharedPref() {
+        val sharedPref: SharedPreferences = activity!!.getSharedPreferences(PREF_NAME, PRIVATE_MODE)
+        val editor = sharedPref.edit()
+        editor.putBoolean(PREF_NAME, true)
+        editor.putString(FULL_NAME_KEY, fullName)
+        editor.putString(EMAIL_KEY, email)
+        editor.putString(MOBILE_KEY, mobile)
+        editor.putString(PASSWORD_KEY, password)
+        editor.apply()
+    }
+
+    private fun saveInDb() {
+        val db = dbHelper.writableDatabase
+
+        val values = ContentValues().apply {
+            put(UserContract.User.COLUMN_NAME_FULLNAME, fullName)
+            put(UserContract.User.COLUMN_NAME_EMAIL, email)
+            put(UserContract.User.COLUMN_NAME_CONTACT, mobile)
+            put(UserContract.User.COLUMN_NAME_PASSWORD, password)
+        }
+
+        val newRowId = db?.insert(UserContract.User.TABLE_NAME, null, values)
+        saveInSharedPref()
+        Log.i("ROWID", newRowId.toString())
     }
 
     private fun validateFullName(): Boolean {
@@ -104,13 +129,14 @@ class ThirdFragment : Fragment() {
 
 
     private fun validatePassword(): Boolean {
-        if (editTextPassword.text.toString().length >4) {
+        if (editTextPassword.text.toString().length > 4) {
             password = editTextPassword.text.toString()
             return true
         }
         editTextPassword.error = "Password should be atleast 4 characters"
         return false
     }
-}
 
+
+}
 

@@ -90,6 +90,7 @@
             style="@style/modifiedEditText"
             android:hint="Password"
             android:maxLines="1"
+            android:maxLength="10"
             android:inputType="textPassword"/>
     </com.google.android.material.textfield.TextInputLayout>
     <ImageView
