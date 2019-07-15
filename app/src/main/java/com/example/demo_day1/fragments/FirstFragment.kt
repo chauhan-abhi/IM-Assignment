@@ -1,6 +1,7 @@
 package com.example.demo_day1.fragments
 
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -10,8 +11,10 @@ import android.widget.TextView
 
 import com.example.demo_day1.R
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.google.android.material.appbar.AppBarLayout
+import kotlinx.android.synthetic.main.fragment_first.*
 
 
 class FirstFragment : Fragment(), AppBarLayout.OnOffsetChangedListener {
@@ -25,9 +28,7 @@ class FirstFragment : Fragment(), AppBarLayout.OnOffsetChangedListener {
 
     private var mTitleContainer: LinearLayout? = null
     private var mTitle: TextView? = null
-    private var mAppBarLayout: AppBarLayout? = null
-    private var mToolbar: Toolbar? = null
-
+    lateinit var navController: NavController
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,17 +37,20 @@ class FirstFragment : Fragment(), AppBarLayout.OnOffsetChangedListener {
         (activity as AppCompatActivity).supportActionBar!!.hide()
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_first, container, false)
-        bindViews(view)
+        navController = Navigation.findNavController(activity as Activity, R.id.nav_host_fragment)
 
         return view
     }
 
-    private fun bindViews(view: View) {
-        mToolbar = view.findViewById(R.id.main_toolbar)
-        mTitle = view.findViewById(R.id.main_textview_title)
-        mTitleContainer = view.findViewById(R.id.main_linearlayout_title)
-        mAppBarLayout = view.findViewById(R.id.main_appbar)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        edit_profile_fab.setOnClickListener {
+            // open fourth fragment
+            navController.navigate(R.id.fourthFragment)
+
+        }
     }
+
 
     override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
         val maxScroll = appBarLayout?.totalScrollRange

@@ -15,7 +15,9 @@ import com.example.demo_day1.adapters.ContactListAdapter
 import com.example.demo_day1.model.Contact
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
+import com.example.demo_day1.activities.MainActivity
 import com.example.demo_day1.utils.REMOTE_URL
 import com.example.demo_day1.utils.isNetworkStatusAvailable
 import com.example.demo_day1.utils.showSnackBar
@@ -48,6 +50,9 @@ class SecondFragment : Fragment() {
         rvContact.layoutManager = LinearLayoutManager(context)
         rvContact.setHasFixedSize(true)
         rvContact.adapter = ContactListAdapter(contactList)
+        (activity as MainActivity).supportActionBar?.title = "Contacts List"
+
+        //(activity as AppCompatActivity).supportActionBar!!.hide()
 
         return view
     }
@@ -111,29 +116,6 @@ class SecondFragment : Fragment() {
                 val inString = streamToString(urlConnection.inputStream)
                 return parseUserResponse(inString)
 
-                /*urlConnection.inputStream.let {
-                    if (it == null) {
-                        return ArrayList()
-                    }
-                    val buffer = StringBuffer()
-                    reader = BufferedReader(InputStreamReader(it))
-
-                    var line: String
-
-                    if (reader != null) {
-                        while (reader.readLine() != null) {
-                            line = reader!!.readLine()
-                            buffer.append(line + "\n")
-                        }
-                    }
-
-                    if (buffer.isEmpty()) {
-                        return ArrayList()
-                    }
-                    userResponse = buffer.toString()
-                    return parseUserResponse(userResponse)
-                }*/
-
             } catch (e: IOException) {
                 Log.e("IOERROR", e.message + "")
             } finally {
@@ -169,18 +151,16 @@ class SecondFragment : Fragment() {
     private fun parseUserResponse(userResponse: String): ArrayList<Contact> {
         val jsonArray = JSONArray(JSONObject(userResponse).getString("results"))
         for (i in 0 until jsonArray.length()) {
-             val user = jsonArray[i] as JSONObject
-             contactList.add(
-                 Contact(
-                     user.getString("personName"),
-                     user.getString("personEmail"),
-                     user.getLong("contactNumber").toString(),
-                     "https://avatars1.githubusercontent.com/u/20797673?s=460&v=4"
-                 )
-             )
-         }
+            val user = jsonArray[i] as JSONObject
+            contactList.add(
+                Contact(
+                    user.getString("personName"),
+                    user.getString("personEmail"),
+                    user.getLong("contactNumber").toString(),
+                    "https://avatars1.githubusercontent.com/u/20797673?s=460&v=4"
+                )
+            )
+        }
         return contactList
     }
-
-
 }

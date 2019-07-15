@@ -3,6 +3,7 @@ package com.example.demo_day1.fragments
 
 import android.app.Activity
 import android.content.ContentValues
+import android.content.Context
 import android.content.SharedPreferences
 import android.database.sqlite.SQLiteOpenHelper
 import android.os.Bundle
@@ -12,6 +13,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -42,6 +44,7 @@ class ThirdFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_third, container, false)
         navController = Navigation.findNavController(activity as Activity, R.id.onboarding_fragment)
+        //(activity as AppCompatActivity).supportActionBar!!.hide()
 
         return view
     }
@@ -137,6 +140,10 @@ class ThirdFragment : Fragment() {
         return false
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        (activity as AppCompatActivity).supportActionBar!!.show()
+    }
 
 }
 

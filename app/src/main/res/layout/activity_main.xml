@@ -17,8 +17,8 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@android:color/darker_gray"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark" />
+                android:background="@android:color/white"
+                android:theme="@style/ThemeOverlay.AppCompat.Light" />
 
         <fragment
                 android:id="@+id/nav_host_fragment"
