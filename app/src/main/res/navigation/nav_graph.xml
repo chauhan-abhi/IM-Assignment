@@ -43,7 +43,14 @@
         android:id="@+id/fourthFragment"
         android:name="com.example.demo_day1.fragments.FourthFragment"
         android:label="Fourth Fragment"
-        tools:layout="@layout/fragment_fourth"/>
+        tools:layout="@layout/fragment_fourth">
+        <action
+            android:id="@+id/action_fourthFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:launchSingleTop="true"
+            app:popUpToInclusive="true"
+        />
+    </fragment>
 
 
 </navigation>

@@ -75,6 +75,8 @@ class FirstFragment : Fragment(), AppBarLayout.OnOffsetChangedListener {
     private fun populateFields() {
         if (imageUri != "") {
             profileCircleImageView.setImageURI(Uri.parse(imageUri))
+        } else {
+            profileCircleImageView.setImageResource(R.drawable.avatar)
         }
         fullNameTV.text = fullName
         mobileTextView.text = mobile

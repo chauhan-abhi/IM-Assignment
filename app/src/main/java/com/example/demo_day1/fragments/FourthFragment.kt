@@ -4,6 +4,7 @@ package com.example.demo_day1.fragments
 import android.Manifest
 import android.app.Activity
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.database.sqlite.SQLiteOpenHelper
@@ -18,24 +19,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 
 import com.example.demo_day1.R
 import com.example.demo_day1.activities.MainActivity
 import com.example.demo_day1.base.ImagePickerActivity
 import com.example.demo_day1.db.RegisterUserDbHelper
 import com.example.demo_day1.db.UserContract
+import com.example.demo_day1.interfaces.UpdateProfileInterface
 import com.example.demo_day1.utils.*
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import kotlinx.android.synthetic.main.contact_list_item.*
 import kotlinx.android.synthetic.main.fragment_fourth.*
 
 class FourthFragment : Fragment() {
 
     private var uri: Uri? = null
     lateinit var dbHelper: SQLiteOpenHelper
+    private lateinit var navController: NavController
+    private lateinit var updateProfileListener: UpdateProfileInterface
 
     private val REQUEST_IMAGE = 100
 
@@ -71,18 +78,22 @@ class FourthFragment : Fragment() {
         (activity as MainActivity).supportActionBar?.title = "Update Profile"
         saveProfileButton.setOnClickListener {
             validateFields()
+
         }
         editProfileImageFab.setOnClickListener {
             requestCameraPermission()
         }
         dbHelper = RegisterUserDbHelper(context)
         populateFields()
+        navController = Navigation.findNavController(activity as MainActivity, R.id.nav_host_fragment)
 
     }
 
     private fun populateFields() {
         if (imageUri != "") {
             circleImageView.setImageURI(Uri.parse(imageUri))
+        } else {
+            circleImageView.setImageResource(R.drawable.avatar)
         }
         mobileTextView.text = mobile
         editTextName.setText(fullName)
@@ -164,6 +175,9 @@ class FourthFragment : Fragment() {
 
     private fun validateFields() {
         if (validateFullName() && validateEmail() && validatePassword()) {
+            fullName = editTextName.text.toString()
+            email = editTextEmail.text.toString()
+            password = editTextPassword.text.toString()
             updateDetails()
         }
     }
@@ -193,11 +207,10 @@ class FourthFragment : Fragment() {
             put(UserContract.User.COLUMN_NAME_FULLNAME, fullName)
             put(UserContract.User.COLUMN_NAME_EMAIL, email)
             put(UserContract.User.COLUMN_NAME_PASSWORD, password)
-            var pathUri = ""
             if (uri != null) {
-                pathUri = uri.toString()
+                imageUri = uri.toString()
             }
-            put(UserContract.User.COLUMN_PROFILE_PIC_URI, pathUri)
+            put(UserContract.User.COLUMN_PROFILE_PIC_URI, imageUri)
         }
 
         val updatedRowId = db.update(
@@ -206,8 +219,11 @@ class FourthFragment : Fragment() {
             "_id = ?", arrayOf(rowid.toString())
         )
         syncSharedPref()
-        Toast.makeText(context, "Details updated successfully", Toast.LENGTH_LONG).show()
+        Toast.makeText(context as MainActivity, "Details updated successfully", Toast.LENGTH_LONG).show()
         Log.d("UPDATED ROW ID", updatedRowId.toString())
+        activity!!.hideKeyBoard()
+        updateProfileListener.onProfileUpdated()
+        navController.navigate(R.id.action_fourthFragment_to_homeFragment)
     }
 
     private fun syncSharedPref() {
@@ -217,9 +233,8 @@ class FourthFragment : Fragment() {
         editor.putString(FULL_NAME_KEY, fullName)
         editor.putString(EMAIL_KEY, email)
         editor.putString(PASSWORD_KEY, password)
-        editor.putString(PROFILE_PIC_URI, uri.toString())
+        editor.putString(PROFILE_PIC_URI, imageUri.toString())
         editor.apply()
-
     }
 
     private fun validatePassword(): Boolean {
@@ -266,6 +281,19 @@ class FourthFragment : Fragment() {
                     }
                 }
             }
+        }
+    }
+
+    fun setUpdateProfileListener(callback: UpdateProfileInterface) {
+        this.updateProfileListener = callback
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is UpdateProfileInterface) {
+            updateProfileListener = context
+        } else {
+            throw RuntimeException(context.toString() + " must implement FragmentEvent")
         }
     }
 }

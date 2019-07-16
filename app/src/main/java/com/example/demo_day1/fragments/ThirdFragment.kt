@@ -68,6 +68,7 @@ class ThirdFragment : Fragment() {
             )
             // open login
             saveInDb()
+            saveInSharedPref()
             navController.navigate(R.id.loginFragment, bundle)
 
         }
@@ -98,7 +99,6 @@ class ThirdFragment : Fragment() {
         }
 
         val newRowId = db?.insert(UserContract.User.TABLE_NAME, null, values)
-        saveInSharedPref()
         Log.i("ROWID", newRowId.toString())
     }
 

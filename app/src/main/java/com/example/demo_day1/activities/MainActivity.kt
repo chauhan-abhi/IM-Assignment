@@ -8,14 +8,17 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import com.example.demo_day1.R
+import com.example.demo_day1.fragments.FourthFragment
+import com.example.demo_day1.interfaces.UpdateProfileInterface
 import com.example.demo_day1.utils.*
 import com.google.android.material.navigation.NavigationView
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, UpdateProfileInterface {
 
     private lateinit var toolbar: Toolbar
     private lateinit var drawerLayout: DrawerLayout
@@ -31,21 +34,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         bundle = getLoggedInUser()
     }
 
-    private fun getLoggedInUser(): Bundle {
-        val sharedPref: SharedPreferences = getSharedPreferences(PREF_NAME, PRIVATE_MODE)
-        val fullName = sharedPref.getString(FULL_NAME_KEY, "")
-        val email = sharedPref.getString(EMAIL_KEY, "")
-        val mobile = sharedPref.getString(MOBILE_KEY, "")
-        val password = sharedPref.getString(PASSWORD_KEY, "")
-        val profilePic = sharedPref.getString(PROFILE_PIC_URI, "")
-        return bundleOf(
-            FULL_NAME_KEY to fullName,
-            EMAIL_KEY to email,
-            MOBILE_KEY to mobile,
-            PASSWORD_KEY to password,
-            PROFILE_PIC_URI to profilePic
-        )
-    }
 
     private fun setUpNavigation() {
         toolbar = findViewById(R.id.toolbar)
@@ -101,4 +89,31 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
+    override fun onProfileUpdated() {
+        bundle = getLoggedInUser()
+        supportActionBar!!.show()
+    }
+
+    private fun getLoggedInUser(): Bundle {
+        val sharedPref: SharedPreferences = getSharedPreferences(PREF_NAME, PRIVATE_MODE)
+        val fullName = sharedPref.getString(FULL_NAME_KEY, "")
+        val email = sharedPref.getString(EMAIL_KEY, "")
+        val mobile = sharedPref.getString(MOBILE_KEY, "")
+        val password = sharedPref.getString(PASSWORD_KEY, "")
+        val profilePic = sharedPref.getString(PROFILE_PIC_URI, "")
+        return bundleOf(
+            FULL_NAME_KEY to fullName,
+            EMAIL_KEY to email,
+            MOBILE_KEY to mobile,
+            PASSWORD_KEY to password,
+            PROFILE_PIC_URI to profilePic
+        )
+    }
+
+    override fun onAttachFragment(fragment: Fragment) {
+        if (fragment is FourthFragment) {
+            fragment.setUpdateProfileListener(this)
+        }
+        super.onAttachFragment(fragment)
+    }
 }
