@@ -1,32 +1,271 @@
 package com.example.demo_day1.fragments
 
-import android.content.Context
+
+import android.Manifest
+import android.app.Activity
+import android.content.ContentValues
+import android.content.Intent
+import android.content.SharedPreferences
+import android.database.sqlite.SQLiteOpenHelper
 import android.net.Uri
 import android.os.Bundle
+import android.provider.BaseColumns
+import android.provider.MediaStore
+import android.util.Log
+import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.Toast
 
 import com.example.demo_day1.R
 import com.example.demo_day1.activities.MainActivity
+import com.example.demo_day1.base.ImagePickerActivity
+import com.example.demo_day1.db.RegisterUserDbHelper
+import com.example.demo_day1.db.UserContract
+import com.example.demo_day1.utils.*
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.MultiplePermissionsReport
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import kotlinx.android.synthetic.main.fragment_fourth.*
 
 class FourthFragment : Fragment() {
+
+    private var uri: Uri? = null
+    lateinit var dbHelper: SQLiteOpenHelper
+
+    private val REQUEST_IMAGE = 100
+
+    private var fullName: String? = ""
+    private var email: String? = ""
+    private var password: String? = ""
+    private var mobile: String? = ""
+    private var imageUri: String? = ""
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        getIntentParams()
+        ImagePickerActivity.clearCache(context)
+    }
+
+    private fun getIntentParams() {
+        fullName = arguments!!.getString(FULL_NAME_KEY)
+        email = arguments!!.getString(EMAIL_KEY)
+        mobile = arguments!!.getString(MOBILE_KEY)
+        password = arguments!!.getString(PASSWORD_KEY)
+        imageUri = arguments!!.getString(PROFILE_PIC_URI)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_fourth, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as MainActivity).supportActionBar?.title = "Update Profile"
+        saveProfileButton.setOnClickListener {
+            validateFields()
+        }
+        editProfileImageFab.setOnClickListener {
+            requestCameraPermission()
+        }
+        dbHelper = RegisterUserDbHelper(context)
+        populateFields()
 
     }
 
+    private fun populateFields() {
+        if (imageUri != "") {
+            circleImageView.setImageURI(Uri.parse(imageUri))
+        }
+        mobileTextView.text = mobile
+        editTextName.setText(fullName)
+        editTextEmail.setText(email)
 
+    }
+
+    private fun requestCameraPermission() {
+        if (android.os.Build.VERSION.SDK_INT > 22) {
+            Dexter.withActivity(activity as MainActivity)
+                .withPermissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .withListener(object : MultiplePermissionsListener {
+                    override fun onPermissionsChecked(report: MultiplePermissionsReport) {
+                        if (report.areAllPermissionsGranted()) {
+                            showImagePickerOptions()
+                        }
+
+                        if (report.isAnyPermissionPermanentlyDenied) {
+                            // showSettingsDialog()
+                        }
+                    }
+
+                    override fun onPermissionRationaleShouldBeShown(
+                        permissions: MutableList<PermissionRequest>?,
+                        token: PermissionToken
+                    ) {
+                        token.continuePermissionRequest()
+                    }
+
+                }).check()
+        } else {
+            showImagePickerOptions()
+        }
+    }
+
+    private fun showImagePickerOptions() {
+        ImagePickerActivity.showImagePickerOptions(
+            context as MainActivity,
+            object : ImagePickerActivity.PickerOptionListener {
+                override fun onTakeCameraSelected() {
+                    launchCameraIntent()
+                }
+
+                override fun onChooseGallerySelected() {
+                    launchGalleryIntent()
+                }
+
+            })
+    }
+
+    private fun launchGalleryIntent() {
+        val intent = Intent(context, ImagePickerActivity::class.java)
+        intent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION, ImagePickerActivity.REQUEST_GALLERY_IMAGE)
+
+        // setting aspect ratio
+        intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true)
+        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1) // 16x9, 1x1, 3:4, 3:2
+        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1)
+        startActivityForResult(intent, REQUEST_IMAGE)
+    }
+
+    private fun launchCameraIntent() {
+        val intent = Intent(context, ImagePickerActivity::class.java)
+        intent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION, ImagePickerActivity.REQUEST_IMAGE_CAPTURE)
+
+        // setting aspect ratio
+        intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true)
+        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1) // 16x9, 1x1, 3:4, 3:2
+        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1)
+
+        // setting maximum bitmap width and height
+        intent.putExtra(ImagePickerActivity.INTENT_SET_BITMAP_MAX_WIDTH_HEIGHT, true)
+        intent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_WIDTH, 1000)
+        intent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_HEIGHT, 1000)
+
+        startActivityForResult(intent, REQUEST_IMAGE)
+    }
+
+
+    private fun validateFields() {
+        if (validateFullName() && validateEmail() && validatePassword()) {
+            updateDetails()
+        }
+    }
+
+    private fun updateDetails() {
+        val db = dbHelper.writableDatabase
+        val projection = arrayOf(
+            BaseColumns._ID
+        )
+        val selection = "${UserContract.User.COLUMN_NAME_CONTACT} = ?"
+        val selectionArgs = arrayOf(mobile)
+        val sortOrder = "${BaseColumns._ID} ASC"
+
+        val cursor = db.query(
+            UserContract.User.TABLE_NAME,
+            projection,
+            selection,
+            selectionArgs,
+            null,
+            null,
+            sortOrder
+        )
+        cursor.moveToFirst()
+        val rowid = cursor.getLong(cursor.getColumnIndex("_id"))
+
+        val values = ContentValues().apply {
+            put(UserContract.User.COLUMN_NAME_FULLNAME, fullName)
+            put(UserContract.User.COLUMN_NAME_EMAIL, email)
+            put(UserContract.User.COLUMN_NAME_PASSWORD, password)
+            var pathUri = ""
+            if (uri != null) {
+                pathUri = uri.toString()
+            }
+            put(UserContract.User.COLUMN_PROFILE_PIC_URI, pathUri)
+        }
+
+        val updatedRowId = db.update(
+            UserContract.User.TABLE_NAME,
+            values,
+            "_id = ?", arrayOf(rowid.toString())
+        )
+        syncSharedPref()
+        Toast.makeText(context, "Details updated successfully", Toast.LENGTH_LONG).show()
+        Log.d("UPDATED ROW ID", updatedRowId.toString())
+    }
+
+    private fun syncSharedPref() {
+        val sharedPref: SharedPreferences = activity!!.getSharedPreferences(PREF_NAME, PRIVATE_MODE)
+        val editor = sharedPref.edit()
+        editor.putBoolean(PREF_NAME, true)
+        editor.putString(FULL_NAME_KEY, fullName)
+        editor.putString(EMAIL_KEY, email)
+        editor.putString(PASSWORD_KEY, password)
+        editor.putString(PROFILE_PIC_URI, uri.toString())
+        editor.apply()
+
+    }
+
+    private fun validatePassword(): Boolean {
+        if (editTextPassword.text.toString().length > 4) {
+            password = editTextPassword.text.toString()
+            return true
+        }
+        editTextPassword.error = "Password should be atleast 4 characters"
+        return false
+    }
+
+    private fun validateEmail(): Boolean {
+        if (Patterns.EMAIL_ADDRESS.matcher(editTextEmail.text.toString()).matches()) {
+            email = editTextEmail.text.toString()
+            return true
+        }
+        editTextEmail.error = "Please enter valid email"
+        return false
+
+    }
+
+    private fun validateFullName(): Boolean {
+        if (editTextName.text.toString().isNotBlank()) {
+            fullName = editTextName.text.toString()
+            return true
+        }
+        editTextName.error = "Please Enter Full Name"
+        return false
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_IMAGE) {
+            if (resultCode == Activity.RESULT_OK) {
+                if (data != null) {
+                    uri = data.getParcelableExtra("path")
+                    try {
+                        //setImageView
+                        circleImageView.setImageURI(null)
+                        circleImageView.setImageURI(uri)
+
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+        }
+    }
 }

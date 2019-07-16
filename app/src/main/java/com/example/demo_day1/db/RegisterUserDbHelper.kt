@@ -11,7 +11,8 @@ private const val SQL_CREATE_USER_DETAIL_TABLE =
             "${UserContract.User.COLUMN_NAME_FULLNAME} TEXT," +
             "${UserContract.User.COLUMN_NAME_EMAIL} TEXT," +
             "${UserContract.User.COLUMN_NAME_CONTACT} TEXT," +
-            "${UserContract.User.COLUMN_NAME_PASSWORD} TEXT)"
+            "${UserContract.User.COLUMN_NAME_PASSWORD} TEXT," +
+            "${UserContract.User.COLUMN_PROFILE_PIC_URI} TEXT)"
 
 private const val SQL_DELETE_TABLE = "DROP TABLE IF EXISTS ${UserContract.User.TABLE_NAME}"
 

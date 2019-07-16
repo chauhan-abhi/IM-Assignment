@@ -51,6 +51,7 @@
                 >
                     
                     <TextView
+                        android:id="@+id/fullNameTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
@@ -61,6 +62,7 @@
                     />
                     
                     <TextView
+                        android:id="@+id/mobileTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
@@ -140,6 +142,7 @@
     </androidx.appcompat.widget.Toolbar>
     
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profileCircleImageView"
         android:layout_width="@dimen/image_width"
         android:layout_height="@dimen/image_width"
         android:layout_gravity="center_horizontal"

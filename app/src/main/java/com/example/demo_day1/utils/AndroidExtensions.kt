@@ -13,6 +13,7 @@ import android.R.attr.duration
 import com.google.android.material.snackbar.Snackbar
 import android.app.Activity
 import android.view.View
+import android.widget.EditText
 
 
 fun isNetworkStatusAvailable(context: Context): Boolean {

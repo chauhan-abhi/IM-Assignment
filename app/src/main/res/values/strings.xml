@@ -9,4 +9,11 @@
         fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
         anim id est laborum.
     </string>
+    
+    
+    <string name="lbl_set_profile_photo">Pick your image</string>
+    <string name="lbl_take_camera_picture">Take a picture</string>
+    <string name="lbl_choose_from_gallery">Choose from gallery</string>
+    
+    <string name="toast_image_intent_null">No image picked</string>
 </resources>

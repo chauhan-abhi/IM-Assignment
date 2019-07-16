@@ -31,7 +31,6 @@ class ThirdFragment : Fragment() {
 
     lateinit var navController: NavController
     lateinit var dbHelper: SQLiteOpenHelper
-    private val PREF_NAME = "com.example.demo_day1.PREFERENCE_FILE_KEY"
     private var fullName = ""
     private var email = ""
     private var mobile = ""
@@ -82,6 +81,8 @@ class ThirdFragment : Fragment() {
         editor.putString(EMAIL_KEY, email)
         editor.putString(MOBILE_KEY, mobile)
         editor.putString(PASSWORD_KEY, password)
+        editor.putString(PROFILE_PIC_URI, "")
+
         editor.apply()
     }
 
@@ -93,6 +94,7 @@ class ThirdFragment : Fragment() {
             put(UserContract.User.COLUMN_NAME_EMAIL, email)
             put(UserContract.User.COLUMN_NAME_CONTACT, mobile)
             put(UserContract.User.COLUMN_NAME_PASSWORD, password)
+            put(UserContract.User.COLUMN_PROFILE_PIC_URI, "")
         }
 
         val newRowId = db?.insert(UserContract.User.TABLE_NAME, null, values)
@@ -138,11 +140,6 @@ class ThirdFragment : Fragment() {
         }
         editTextPassword.error = "Password should be atleast 4 characters"
         return false
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        (activity as AppCompatActivity).supportActionBar!!.show()
     }
 
 }
