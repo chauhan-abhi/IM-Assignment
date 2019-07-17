@@ -13,7 +13,8 @@
         
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
-            android:layout_height="64dp"
+            android:layout_height="96dp"
+            app:srcCompat="@drawable/cover_background_rounded_corners"
             android:background="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -27,16 +28,10 @@
             android:src="@drawable/avatar"
             android:layout_gravity="center_horizontal"
             app:border_color="@android:color/white"
-            app:border_width="2dp"
-            app:finalHeight="@dimen/image_final_width"
             app:layout_behavior=".utils.AvatarImageBehavior"
-            app:finalYPosition="2dp"
-            app:startHeight="2dp"
-            app:startToolbarPosition="2dp"
-            app:startXPosition="2dp"
             android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" android:id="@+id/circleImageView"
+            android:layout_marginStart="8dp" android:id="@+id/profileCircleImageView"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout" android:layout_marginTop="8dp"
             app:layout_constraintTop_toTopOf="parent"/>
         
@@ -68,7 +63,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/mobileTextView" app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/circleImageView" android:textSize="22sp"
+            app:layout_constraintTop_toBottomOf="@+id/profileCircleImageView" android:textSize="22sp"
             android:textStyle="bold"/>
         
         <com.google.android.material.textfield.TextInputLayout

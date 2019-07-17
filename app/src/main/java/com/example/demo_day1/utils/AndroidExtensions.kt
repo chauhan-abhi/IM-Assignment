@@ -16,8 +16,9 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.core.content.ContextCompat.getSystemService
-
-
+import android.view.WindowManager
+import android.os.Build
+import android.view.Window
 
 
 fun isNetworkStatusAvailable(context: Context): Boolean {
@@ -50,6 +51,22 @@ fun Activity.hideKeyBoard() {
     val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     val view = this.currentFocus
     imm.hideSoftInputFromWindow(view!!.windowToken, 0)
+}
+
+fun Activity.hideStatusBar(window: Window) {
+    // Hide Status Bar
+    val decorView = window.decorView
+    // Hide Status Bar.
+    val uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN
+    decorView.systemUiVisibility = uiOptions
+
+}
+
+fun Activity.showStatusBar(window: Window) {
+    val decorView = getWindow().decorView
+    // Show Status Bar.
+    val uiOptions = View.SYSTEM_UI_FLAG_VISIBLE
+    decorView.systemUiVisibility = uiOptions
 }
 
 fun ImageView.loadImg(imageUrl: String?) =

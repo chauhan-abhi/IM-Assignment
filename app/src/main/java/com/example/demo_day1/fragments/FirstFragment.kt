@@ -2,6 +2,7 @@ package com.example.demo_day1.fragments
 
 
 import android.app.Activity
+import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
@@ -16,24 +17,21 @@ import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.demo_day1.utils.*
-import com.google.android.material.appbar.AppBarLayout
-import kotlinx.android.synthetic.main.fragment_first.*
-import kotlinx.android.synthetic.main.fragment_first.mobileTextView
-import kotlinx.android.synthetic.main.fragment_fourth.*
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
+import androidx.transition.TransitionManager
+
+import kotlinx.android.synthetic.main.fragment_profile.*
 
 
-class FirstFragment : Fragment(), AppBarLayout.OnOffsetChangedListener {
+class FirstFragment : Fragment() {
 
-    private val PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.9f
-    private val PERCENTAGE_TO_HIDE_TITLE_DETAILS = 0.3f
-    private val ALPHA_ANIMATIONS_DURATION = 200
 
-    private var mIsTheTitleVisible = false
-    private var mIsTheTitleContainerVisible = true
-
-    private var mTitleContainer: LinearLayout? = null
-    private var mTitle: TextView? = null
     lateinit var navController: NavController
+    private lateinit var root: ConstraintLayout
+    private lateinit var constraintLayout1: ConstraintSet
+    private lateinit var constraintLayout2: ConstraintSet
+
 
     private var fullName: String? = ""
     private var email: String? = ""
@@ -41,6 +39,8 @@ class FirstFragment : Fragment(), AppBarLayout.OnOffsetChangedListener {
     private var mobile: String? = ""
     private var imageUri: String? = ""
     private lateinit var bundle: Bundle
+    private var isOpen = false
+    lateinit var window: Window
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,15 +48,22 @@ class FirstFragment : Fragment(), AppBarLayout.OnOffsetChangedListener {
         getIntentParams()
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        window = activity!!.window
+        activity!!.hideStatusBar(window)
+    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         (activity as AppCompatActivity).supportActionBar!!.hide()
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_first, container, false)
+        val view = inflater.inflate(R.layout.fragment_profile, container, false)
+        root = view.findViewById(R.id.constraint_layout_closed)
         navController = Navigation.findNavController(activity as Activity, R.id.nav_host_fragment)
-
         return view
     }
 
@@ -67,9 +74,24 @@ class FirstFragment : Fragment(), AppBarLayout.OnOffsetChangedListener {
             navController.navigate(R.id.fourthFragment, bundle)
 
         }
+        setAnimation()
         populateFields()
 
 
+    }
+
+    private fun setAnimation() {
+        constraintLayout1 = ConstraintSet()
+        constraintLayout1.clone(root)
+        constraintLayout2 = ConstraintSet()
+        constraintLayout2.clone(context, R.layout.profile_expanded)
+
+        profileCircleImageView.setOnClickListener {
+            TransitionManager.beginDelayedTransition(constraint_layout_closed)
+            val constraint = if (isOpen) constraintLayout1 else constraintLayout2
+            constraint.applyTo(constraint_layout_closed)
+            isOpen = !isOpen
+        }
     }
 
     private fun populateFields() {
@@ -99,64 +121,11 @@ class FirstFragment : Fragment(), AppBarLayout.OnOffsetChangedListener {
     }
 
 
-    override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
-        val maxScroll = appBarLayout?.totalScrollRange
-        val percentage = Math.abs(verticalOffset).toFloat() / maxScroll!!.toFloat()
-
-        handleAlphaOnTitle(percentage)
-        handleToolbarTitleVisibility(percentage)
-
-    }
-
-    private fun handleToolbarTitleVisibility(percentage: Float) {
-        if (percentage >= PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR) {
-
-            if (!mIsTheTitleVisible) {
-                startAlphaAnimation(mTitle as View, ALPHA_ANIMATIONS_DURATION.toLong(), View.VISIBLE)
-                mIsTheTitleVisible = true
-            }
-
-        } else {
-
-            if (mIsTheTitleVisible) {
-                startAlphaAnimation(mTitle as View, ALPHA_ANIMATIONS_DURATION.toLong(), View.INVISIBLE)
-                mIsTheTitleVisible = false
-            }
-        }
-    }
-
-    private fun handleAlphaOnTitle(percentage: Float) {
-        if (percentage >= PERCENTAGE_TO_HIDE_TITLE_DETAILS) {
-            if (mIsTheTitleContainerVisible) {
-                startAlphaAnimation(mTitleContainer as View, ALPHA_ANIMATIONS_DURATION.toLong(), View.INVISIBLE)
-                mIsTheTitleContainerVisible = false
-            }
-
-        } else {
-
-            if (!mIsTheTitleContainerVisible) {
-                startAlphaAnimation(mTitleContainer as View, ALPHA_ANIMATIONS_DURATION.toLong(), View.VISIBLE)
-                mIsTheTitleContainerVisible = true
-            }
-        }
-    }
-
-
-    private fun startAlphaAnimation(v: View, duration: Long, visibility: Int) {
-        val alphaAnimation = if (visibility == View.VISIBLE)
-            AlphaAnimation(0f, 1f)
-        else
-            AlphaAnimation(1f, 0f)
-
-        alphaAnimation.duration = duration
-        alphaAnimation.fillAfter = true
-        v.startAnimation(alphaAnimation)
-    }
-
-
     override fun onDetach() {
         super.onDetach()
         (activity as AppCompatActivity).supportActionBar!!.show()
+        activity!!.showStatusBar(window)
+
 
     }
 

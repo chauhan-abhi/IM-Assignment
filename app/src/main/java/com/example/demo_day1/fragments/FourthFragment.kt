@@ -11,13 +11,10 @@ import android.database.sqlite.SQLiteOpenHelper
 import android.net.Uri
 import android.os.Bundle
 import android.provider.BaseColumns
-import android.provider.MediaStore
 import android.util.Log
 import android.util.Patterns
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -34,7 +31,6 @@ import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
-import kotlinx.android.synthetic.main.contact_list_item.*
 import kotlinx.android.synthetic.main.fragment_fourth.*
 
 class FourthFragment : Fragment() {
@@ -51,12 +47,20 @@ class FourthFragment : Fragment() {
     private var password: String? = ""
     private var mobile: String? = ""
     private var imageUri: String? = ""
+    lateinit var window: Window
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getIntentParams()
         ImagePickerActivity.clearCache(context)
+        window = activity!!.window
     }
+
+    override fun onResume() {
+        super.onResume()
+        activity!!.hideStatusBar(window)
+    }
+
 
     private fun getIntentParams() {
         fullName = arguments!!.getString(FULL_NAME_KEY)
@@ -91,9 +95,9 @@ class FourthFragment : Fragment() {
 
     private fun populateFields() {
         if (imageUri != "") {
-            circleImageView.setImageURI(Uri.parse(imageUri))
+            profileCircleImageView.setImageURI(Uri.parse(imageUri))
         } else {
-            circleImageView.setImageResource(R.drawable.avatar)
+            profileCircleImageView.setImageResource(R.drawable.avatar)
         }
         mobileTextView.text = mobile
         editTextName.setText(fullName)
@@ -273,8 +277,8 @@ class FourthFragment : Fragment() {
                     uri = data.getParcelableExtra("path")
                     try {
                         //setImageView
-                        circleImageView.setImageURI(null)
-                        circleImageView.setImageURI(uri)
+                        profileCircleImageView.setImageURI(null)
+                        profileCircleImageView.setImageURI(uri)
 
                     } catch (e: Exception) {
                         e.printStackTrace()
