@@ -3,21 +3,17 @@ package com.example.demo_day1.utils
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.net.NetworkInfo
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.example.demo_day1.R
 import org.json.JSONObject
-import java.io.InputStream
-import android.R.attr.duration
 import com.google.android.material.snackbar.Snackbar
 import android.app.Activity
+import android.content.res.Resources
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import androidx.core.content.ContextCompat.getSystemService
-import android.view.WindowManager
-import android.os.Build
+import android.util.Patterns
 import android.view.Window
 
 
@@ -53,7 +49,7 @@ fun Activity.hideKeyBoard() {
     imm.hideSoftInputFromWindow(view!!.windowToken, 0)
 }
 
-fun Activity.hideStatusBar(window: Window) {
+fun hideStatusBar(window: Window) {
     // Hide Status Bar
     val decorView = window.decorView
     // Hide Status Bar.
@@ -62,8 +58,8 @@ fun Activity.hideStatusBar(window: Window) {
 
 }
 
-fun Activity.showStatusBar(window: Window) {
-    val decorView = getWindow().decorView
+fun showStatusBar(window: Window) {
+    val decorView = window.decorView
     // Show Status Bar.
     val uiOptions = View.SYSTEM_UI_FLAG_VISIBLE
     decorView.systemUiVisibility = uiOptions
@@ -75,8 +71,40 @@ fun ImageView.loadImg(imageUrl: String?) =
         .placeholder(R.drawable.avatar)
         .into(this)
 
+
+fun EditText.isValidFullName(context: Context): Boolean {
+    if (this.text.toString().length >= 4) {
+        return true
+    }
+    this.error = context.getString(R.string.name_error)
+    return false
+}
+
+fun EditText.isValidEmail(context: Context): Boolean {
+    if (Patterns.EMAIL_ADDRESS.matcher(this.text.toString()).matches()) return true
+    this.error = context.getString(R.string.email_error)
+    return false
+}
+
+fun EditText.isValidContact(context: Context): Boolean {
+    if (Patterns.PHONE.matcher(this.text.toString()).matches()
+        && this.text.toString().length == 10
+    ) return true
+    this.error = context.getString(R.string.contact_error)
+    return false
+
+}
+
+fun EditText.isValidPassword(context: Context): Boolean {
+    if (this.text.toString().length > 4) return true
+    this.error = context.getString(R.string.password_error)
+    return false
+}
+
 fun readJSONFromAsset(applicationContext: Context): JSONObject {
-    val jsonfile: String = applicationContext.assets.open("ela.json").bufferedReader().use { it.readText() }
+    val jsonfile: String = applicationContext.assets.open(
+        "ela.json"
+    ).bufferedReader().use { it.readText() }
 
     return JSONObject(jsonfile)
 }

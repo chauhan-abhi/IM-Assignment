@@ -7,10 +7,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.animation.AlphaAnimation
-import android.widget.LinearLayout
-import android.widget.TextView
-
 import com.example.demo_day1.R
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
@@ -51,7 +47,7 @@ class FirstFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         window = activity!!.window
-        activity!!.hideStatusBar(window)
+        hideStatusBar(window)
     }
 
 
@@ -124,7 +120,7 @@ class FirstFragment : Fragment() {
     override fun onDetach() {
         super.onDetach()
         (activity as AppCompatActivity).supportActionBar!!.show()
-        activity!!.showStatusBar(window)
+        showStatusBar(window)
 
 
     }

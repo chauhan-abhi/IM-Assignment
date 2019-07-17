@@ -15,6 +15,7 @@ import com.example.demo_day1.R
 import com.example.demo_day1.activities.MainActivity
 import com.example.demo_day1.db.RegisterUserDbHelper
 import com.example.demo_day1.db.UserContract
+import com.example.demo_day1.utils.isValidPassword
 import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginFragment : Fragment() {
@@ -27,8 +28,7 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_login, container, false)
-        return view
+        return inflater.inflate(R.layout.fragment_login, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,7 +43,6 @@ class LoginFragment : Fragment() {
     }
 
     private fun validateLogin() {
-        //val sharedPref: SharedPreferences = activity!!.getSharedPreferences(PREF_NAME, PRIVATE_MODE)
         val cursor = checkExistingUserFromDb()
 
         with(cursor) {
@@ -52,10 +51,15 @@ class LoginFragment : Fragment() {
                     moveToFirst()
                     val savedPassword = getString(2)
 
-                    if (validatePassword(savedPassword)) {
-                        val intent = Intent(context, MainActivity::class.java)
-                        startActivity(intent)
+                    if (editTextPassword.isValidPassword(context!!) &&
+                        validatePasswordFromDb(savedPassword)
+                    ) {
+                        password = editTextPassword.text.toString()
+                        startActivity(Intent(context, MainActivity::class.java))
                         activity?.finish()
+                    } else {
+                        Toast.makeText(context, "Invalid Password", Toast.LENGTH_LONG).show()
+
                     }
                 }
             } else {
@@ -89,14 +93,7 @@ class LoginFragment : Fragment() {
     }
 
 
-    private fun validatePassword(password: String?): Boolean {
-        if (editTextPassword.text.toString() == password) {
-            this.password = editTextPassword.text.toString()
-            return true
-        }
-        Toast.makeText(context, "Invalid Password", Toast.LENGTH_LONG).show()
-        return false
-    }
-
+    private fun validatePasswordFromDb(password: String?): Boolean =
+        (editTextPassword.text.toString() == password)
 
 }

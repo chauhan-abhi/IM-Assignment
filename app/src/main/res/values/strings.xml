@@ -16,4 +16,8 @@
     <string name="lbl_choose_from_gallery">Choose from gallery</string>
     
     <string name="toast_image_intent_null">No image picked</string>
+    <string name="password_error">Password should be at-least 4 characters</string>
+    <string name="contact_error">Please enter valid contact</string>
+    <string name="email_error">Please enter valid email</string>
+    <string name="name_error">Please Enter Full Name</string>
 </resources>

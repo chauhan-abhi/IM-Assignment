@@ -58,7 +58,7 @@ class FourthFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        activity!!.hideStatusBar(window)
+        hideStatusBar(window)
     }
 
 
@@ -149,31 +149,33 @@ class FourthFragment : Fragment() {
     }
 
     private fun launchGalleryIntent() {
-        val intent = Intent(context, ImagePickerActivity::class.java)
-        intent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION, ImagePickerActivity.REQUEST_GALLERY_IMAGE)
+        Intent(context, ImagePickerActivity::class.java).apply {
 
-        // setting aspect ratio
-        intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true)
-        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1) // 16x9, 1x1, 3:4, 3:2
-        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1)
-        startActivityForResult(intent, REQUEST_IMAGE)
+            putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION, ImagePickerActivity.REQUEST_GALLERY_IMAGE)
+            putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true)
+            putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1) // 16x9, 1x1, 3:4, 3:2
+            putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1)
+
+            startActivityForResult(this, REQUEST_IMAGE)
+        }
     }
 
     private fun launchCameraIntent() {
-        val intent = Intent(context, ImagePickerActivity::class.java)
-        intent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION, ImagePickerActivity.REQUEST_IMAGE_CAPTURE)
+        Intent(context, ImagePickerActivity::class.java).apply {
+            putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION, ImagePickerActivity.REQUEST_IMAGE_CAPTURE)
 
-        // setting aspect ratio
-        intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true)
-        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1) // 16x9, 1x1, 3:4, 3:2
-        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1)
+            // setting aspect ratio
+            putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true)
+            putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1) // 16x9, 1x1, 3:4, 3:2
+            putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1)
 
-        // setting maximum bitmap width and height
-        intent.putExtra(ImagePickerActivity.INTENT_SET_BITMAP_MAX_WIDTH_HEIGHT, true)
-        intent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_WIDTH, 1000)
-        intent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_HEIGHT, 1000)
+            // setting maximum bitmap width and height
+            putExtra(ImagePickerActivity.INTENT_SET_BITMAP_MAX_WIDTH_HEIGHT, true)
+            putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_WIDTH, 1000)
+            putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_HEIGHT, 1000)
 
-        startActivityForResult(intent, REQUEST_IMAGE)
+            startActivityForResult(this, REQUEST_IMAGE)
+        }
     }
 
 
@@ -246,7 +248,7 @@ class FourthFragment : Fragment() {
             password = editTextPassword.text.toString()
             return true
         }
-        editTextPassword.error = "Password should be atleast 4 characters"
+        editTextPassword.error = getString(R.string.password_error)
         return false
     }
 
@@ -255,7 +257,7 @@ class FourthFragment : Fragment() {
             email = editTextEmail.text.toString()
             return true
         }
-        editTextEmail.error = "Please enter valid email"
+        editTextEmail.error = getString(R.string.email_error)
         return false
 
     }
@@ -265,7 +267,7 @@ class FourthFragment : Fragment() {
             fullName = editTextName.text.toString()
             return true
         }
-        editTextName.error = "Please Enter Full Name"
+        editTextName.error = getString(R.string.name_error)
         return false
     }
 
@@ -297,7 +299,7 @@ class FourthFragment : Fragment() {
         if (context is UpdateProfileInterface) {
             updateProfileListener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement FragmentEvent")
+            throw RuntimeException("$context must implement FragmentEvent")
         }
     }
 }
