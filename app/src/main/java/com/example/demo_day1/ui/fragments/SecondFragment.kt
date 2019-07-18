@@ -1,4 +1,4 @@
-package com.example.demo_day1.fragments
+package com.example.demo_day1.ui.fragments
 
 
 import android.os.AsyncTask
@@ -14,20 +14,15 @@ import com.example.demo_day1.R
 import com.example.demo_day1.adapters.ContactListAdapter
 import com.example.demo_day1.data.remote.model.Contact
 import android.util.Log
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import com.example.demo_day1.ui.activities.MainActivity
-import com.example.demo_day1.utils.REMOTE_URL
 import com.example.demo_day1.utils.isNetworkStatusAvailable
 import com.example.demo_day1.utils.showSnackBar
-import com.google.android.material.snackbar.Snackbar
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.*
 import java.net.HttpURLConnection
 import java.net.URL
-import java.nio.Buffer
 
 
 class SecondFragment : Fragment() {

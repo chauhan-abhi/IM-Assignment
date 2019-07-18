@@ -1,9 +1,11 @@
 package com.example.demo_day1.base
 
+import androidx.recyclerview.widget.RecyclerView
 
-abstract class BaseRecyclerViewAdapter<T, V : androidx.recyclerview.widget.RecyclerView.ViewHolder>(
+
+abstract class BaseRecyclerViewAdapter<T, V : RecyclerView.ViewHolder>(
     protected var mList: List<T>?
-) : androidx.recyclerview.widget.RecyclerView.Adapter<V>() {
+) : RecyclerView.Adapter<V>() {
 
     override fun getItemCount(): Int {
         mList?.let { return it.size }

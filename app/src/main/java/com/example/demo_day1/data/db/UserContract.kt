@@ -1,4 +1,4 @@
-package com.example.demo_day1.db
+package com.example.demo_day1.data.db
 
 import android.provider.BaseColumns
 

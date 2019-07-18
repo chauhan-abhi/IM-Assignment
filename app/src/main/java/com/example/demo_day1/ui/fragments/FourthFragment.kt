@@ -1,4 +1,4 @@
-package com.example.demo_day1.fragments
+package com.example.demo_day1.ui.fragments
 
 
 import android.Manifest
@@ -12,7 +12,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.BaseColumns
 import android.util.Log
-import android.util.Patterns
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast

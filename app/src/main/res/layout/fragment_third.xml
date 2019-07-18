@@ -45,6 +45,7 @@
             style="@style/modifiedEditText"
             android:inputType="textPersonName"
             android:maxLines="1"
+            android:digits="@string/allowed_name"
             android:hint="Full Name"/>
     </com.google.android.material.textfield.TextInputLayout>
     
@@ -62,6 +63,7 @@
             android:inputType="textEmailAddress"
             android:maxLines="1"
             android:hint="Email"/>
+        
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputMobile"
@@ -76,6 +78,7 @@
             style="@style/modifiedEditText"
             android:inputType="phone"
             android:maxLines="1"
+            android:digits="0123456789"
             android:maxLength="10"
             android:hint="Mobile No"/>
     </com.google.android.material.textfield.TextInputLayout>

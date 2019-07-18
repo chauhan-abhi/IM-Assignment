@@ -1,6 +1,5 @@
-package com.example.demo_day1.activities
+package com.example.demo_day1.ui.activities
 
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
@@ -13,19 +12,20 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import com.example.demo_day1.R
-import com.example.demo_day1.fragments.FourthFragment
+import com.example.demo_day1.ui.fragments.FourthFragment
 import com.example.demo_day1.interfaces.UpdateProfileInterface
 import com.example.demo_day1.utils.*
 import com.google.android.material.navigation.NavigationView
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, UpdateProfileInterface {
+class MainActivity : AppCompatActivity(),
+    NavigationView.OnNavigationItemSelectedListener,
+    UpdateProfileInterface {
 
     private lateinit var toolbar: Toolbar
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navController: NavController
     private lateinit var navigationView: NavigationView
     private lateinit var bundle: Bundle
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,19 +95,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun getLoggedInUser(): Bundle {
-        val sharedPref: SharedPreferences = getSharedPreferences(PREF_NAME, PRIVATE_MODE)
-        val fullName = sharedPref.getString(FULL_NAME_KEY, "")
-        val email = sharedPref.getString(EMAIL_KEY, "")
-        val mobile = sharedPref.getString(MOBILE_KEY, "")
-        val password = sharedPref.getString(PASSWORD_KEY, "")
-        val profilePic = sharedPref.getString(PROFILE_PIC_URI, "")
-        return bundleOf(
-            FULL_NAME_KEY to fullName,
-            EMAIL_KEY to email,
-            MOBILE_KEY to mobile,
-            PASSWORD_KEY to password,
-            PROFILE_PIC_URI to profilePic
-        )
+        getSharedPreferences(PREF_NAME, PRIVATE_MODE).let { bundle ->
+            bundleOf(
+                FULL_NAME_KEY to bundle.getString(FULL_NAME_KEY, ""),
+                EMAIL_KEY to bundle.getString(EMAIL_KEY, ""),
+                MOBILE_KEY to bundle.getString(MOBILE_KEY, ""),
+                PASSWORD_KEY to bundle.getString(PASSWORD_KEY, ""),
+                PROFILE_PIC_URI to bundle.getString(PROFILE_PIC_URI, "")
+            )
+        }.let {
+            return it
+        }
     }
 
     override fun onAttachFragment(fragment: Fragment) {

@@ -46,6 +46,7 @@
             android:inputType="phone"
             android:maxLines="1"
             android:maxLength="10"
+            android:digits="0123456789"
             android:maxEms="10"
             android:hint="Mobile"/>
     </com.google.android.material.textfield.TextInputLayout>

@@ -11,10 +11,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.demo_day1.R
 import com.example.demo_day1.base.BaseRecyclerViewAdapter
-import com.example.demo_day1.model.Contact
+import com.example.demo_day1.data.remote.model.Contact
 import com.example.demo_day1.utils.loadImg
 import android.Manifest.permission.CALL_PHONE
-import com.example.demo_day1.activities.MainActivity
+import com.example.demo_day1.ui.activities.MainActivity
 import androidx.core.app.ActivityCompat
 import android.content.pm.PackageManager
 

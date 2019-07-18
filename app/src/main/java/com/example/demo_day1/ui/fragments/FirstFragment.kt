@@ -1,4 +1,4 @@
-package com.example.demo_day1.fragments
+package com.example.demo_day1.ui.fragments
 
 
 import android.app.Activity

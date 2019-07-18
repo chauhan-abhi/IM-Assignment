@@ -1,4 +1,4 @@
-package com.example.demo_day1.model
+package com.example.demo_day1.data.remote.model
 
 data class Contact(
     val personName          : String?,

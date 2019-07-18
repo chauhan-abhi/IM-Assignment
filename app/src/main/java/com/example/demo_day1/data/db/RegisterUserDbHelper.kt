@@ -1,4 +1,4 @@
-package com.example.demo_day1.db
+package com.example.demo_day1.data.db
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
@@ -16,7 +16,10 @@ private const val SQL_CREATE_USER_DETAIL_TABLE =
 
 private const val SQL_DELETE_TABLE = "DROP TABLE IF EXISTS ${UserContract.User.TABLE_NAME}"
 
-class RegisterUserDbHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+class RegisterUserDbHelper(context: Context?) : SQLiteOpenHelper(context,
+    DATABASE_NAME, null,
+    DATABASE_VERSION
+) {
 
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(SQL_CREATE_USER_DETAIL_TABLE)
