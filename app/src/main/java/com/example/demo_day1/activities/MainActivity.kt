@@ -1,4 +1,4 @@
-package com.example.demo_day1.ui.activities
+package com.example.demo_day1.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,7 +12,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import com.example.demo_day1.R
-import com.example.demo_day1.ui.fragments.FourthFragment
+import com.example.demo_day1.fragments.FourthFragment
 import com.example.demo_day1.interfaces.UpdateProfileInterface
 import com.example.demo_day1.utils.*
 import com.google.android.material.navigation.NavigationView

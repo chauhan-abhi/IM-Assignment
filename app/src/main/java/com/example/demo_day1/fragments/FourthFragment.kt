@@ -20,7 +20,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 
 import com.example.demo_day1.R
-import com.example.demo_day1.ui.activities.MainActivity
+import com.example.demo_day1.activities.MainActivity
 import com.example.demo_day1.base.ImagePickerActivity
 import com.example.demo_day1.data.db.RegisterUserDbHelper
 import com.example.demo_day1.data.db.UserContract

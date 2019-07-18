@@ -12,7 +12,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.demo_day1.R
-import com.example.demo_day1.ui.activities.MainActivity
+import com.example.demo_day1.activities.MainActivity
 import com.example.demo_day1.data.db.RegisterUserDbHelper
 import com.example.demo_day1.data.db.UserContract
 import com.example.demo_day1.utils.isValidPassword

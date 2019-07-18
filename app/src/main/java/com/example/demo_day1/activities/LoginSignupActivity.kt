@@ -1,4 +1,4 @@
-package com.example.demo_day1.ui.activities
+package com.example.demo_day1.activities
 
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity

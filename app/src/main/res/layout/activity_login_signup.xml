@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorLoginPrimaryDark"
-    tools:context=".ui.activities.LoginSignupActivity">
+    tools:context=".activities.LoginSignupActivity">
     
     <ScrollView
         android:layout_width="match_parent"

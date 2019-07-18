@@ -17,7 +17,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
-import com.example.demo_day1.ui.activities.MainActivity
+import com.example.demo_day1.activities.MainActivity
 import com.example.demo_day1.utils.REMOTE_URL
 import com.example.demo_day1.utils.isNetworkStatusAvailable
 import com.example.demo_day1.utils.showSnackBar
