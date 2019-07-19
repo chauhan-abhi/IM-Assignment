@@ -1,4 +1,4 @@
-package com.example.demo_day1.fragments
+package com.example.demo_day1.ui.contactList
 
 
 import android.os.AsyncTask
@@ -14,20 +14,15 @@ import com.example.demo_day1.R
 import com.example.demo_day1.adapters.ContactListAdapter
 import com.example.demo_day1.data.remote.model.Contact
 import android.util.Log
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import com.example.demo_day1.activities.MainActivity
-import com.example.demo_day1.utils.REMOTE_URL
 import com.example.demo_day1.utils.isNetworkStatusAvailable
 import com.example.demo_day1.utils.showSnackBar
-import com.google.android.material.snackbar.Snackbar
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.*
 import java.net.HttpURLConnection
 import java.net.URL
-import java.nio.Buffer
 
 
 class SecondFragment : Fragment() {
@@ -49,7 +44,7 @@ class SecondFragment : Fragment() {
         //addContacts()
         rvContact.layoutManager = LinearLayoutManager(context)
         rvContact.setHasFixedSize(true)
-        rvContact.adapter = ContactListAdapter(contactList)
+        rvContact.adapter = ContactListAdapter(R.layout.contact_list_item, contactList)
         (activity as MainActivity).supportActionBar?.title = "Contacts List"
 
         //(activity as AppCompatActivity).supportActionBar!!.hide()
@@ -95,7 +90,11 @@ class SecondFragment : Fragment() {
             super.onPostExecute(result)
             progressBar.visibility = View.GONE
             rvContact.visibility = View.VISIBLE
-            rvContact.adapter = ContactListAdapter(result)
+            ContactListAdapter(R.layout.contact_list_item, result).let {
+                rvContact.adapter = it
+                it.setData(result)
+            }
+
         }
 
         override fun doInBackground(vararg url: Void): ArrayList<Contact> {

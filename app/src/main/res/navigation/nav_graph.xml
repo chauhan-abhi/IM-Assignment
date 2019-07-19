@@ -35,7 +35,7 @@
     </fragment>
     <fragment
         android:id="@+id/secondFragment"
-        android:name="com.example.demo_day1.fragments.SecondFragment"
+        android:name="com.example.demo_day1.ui.contactList.SecondFragment"
         android:label="Second Fragment"
         tools:layout="@layout/fragment_second"/>
     

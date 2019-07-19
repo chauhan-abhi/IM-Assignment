@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 open class BaseRecyclerViewHolder<T>(itemView: View): RecyclerView.ViewHolder(itemView) {
 
-    fun bindData(data: T) {
+    open fun bindData(data: T) {
 
     }
 }

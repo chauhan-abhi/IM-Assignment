@@ -2,12 +2,13 @@ package com.example.demo_day1.base
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 
-class GenericRecyclerViewAdapter<T, VH : BaseRecyclerViewHolder<T>>(
+abstract class GenericRecyclerViewAdapter<T, VH : BaseRecyclerViewHolder<T>>(
     protected var itemLayout: Int,
     protected var mList: List<T>
 ) :
-    androidx.recyclerview.widget.RecyclerView.Adapter<VH>() {
+    RecyclerView.Adapter<VH>() {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
