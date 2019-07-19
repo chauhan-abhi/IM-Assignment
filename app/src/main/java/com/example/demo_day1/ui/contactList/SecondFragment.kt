@@ -27,7 +27,6 @@ import java.net.URL
 
 class SecondFragment : Fragment() {
 
-
     private lateinit var rvContact: RecyclerView
     private lateinit var progressBar: ProgressBar
     val contactList: ArrayList<Contact> = ArrayList()

@@ -28,6 +28,9 @@ class AppModule(private var application: Application) {
     @Singleton
     internal fun providesApplication(): Application = application
 
+    @Provides
+    @Singleton
+    fun providesUtils(): AppUtils = AppUtils(application)
 
     @Provides
     internal fun providesSharedPreferences(applicationContext: Context): SharedPreferences =

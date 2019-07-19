@@ -21,4 +21,5 @@
     <string name="email_error">Please enter valid email</string>
     <string name="name_error">Please Enter Full Name</string>
     <string name="allowed_name">qwertzuiopasdfghjklyxcvbnm QWERTYUIOPASDFGHJKLZXCVBNM</string>
+    <string name="contacts_error">Something went wrong</string>
 </resources>
