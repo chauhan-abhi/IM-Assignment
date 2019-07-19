@@ -3,6 +3,9 @@ package com.example.demo_day1.di
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.room.Room
+import com.example.demo_day1.data.db.room_contactsdb.ContactsDao
+import com.example.demo_day1.data.db.room_contactsdb.ContactsDb
 import com.example.demo_day1.data.remote.ApiInterface
 import dagger.Module
 import dagger.Provides
@@ -46,5 +49,14 @@ class AppModule(private var application: Application) {
             //.client(okHttpClient)
             .build()
 
+    @Provides
+    @Singleton
+    fun providesDb(app: Application): ContactsDb = Room
+        .databaseBuilder(app, ContactsDb::class.java, "contacts.db")
+        .fallbackToDestructiveMigration()
+        .build()
 
+    @Provides
+    @Singleton
+    internal fun providesContactsDao(db: ContactsDb): ContactsDao = db.contactsDao()
 }
