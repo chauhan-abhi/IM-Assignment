@@ -9,13 +9,26 @@ import com.example.demo_day1.R
 import org.json.JSONObject
 import com.google.android.material.snackbar.Snackbar
 import android.app.Activity
+import android.content.ContextWrapper
 import android.content.res.Resources
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.util.Patterns
 import android.view.Window
+import androidx.appcompat.app.AppCompatActivity
 
+
+fun View.getParentActivity(): AppCompatActivity? {
+    var context = this.context
+    while (context is ContextWrapper) {
+        if (context is AppCompatActivity) {
+            return context
+        }
+        context = context.baseContext
+    }
+    return null
+}
 
 fun isNetworkStatusAvailable(context: Context): Boolean {
     val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager

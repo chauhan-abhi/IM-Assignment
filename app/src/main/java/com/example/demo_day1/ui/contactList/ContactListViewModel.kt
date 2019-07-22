@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.demo_day1.R
 import com.example.demo_day1.data.remote.model.Contact
-import com.example.demo_day1.di.Injector
 import com.example.demo_day1.ui.contactList.repository.ContactsRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -22,11 +21,11 @@ class ContactListViewModel @Inject constructor(
 
     private val contactsResult: MutableLiveData<List<Contact>> = MutableLiveData()
     private val contactsError: MutableLiveData<String> = MutableLiveData()
-    private val loadingVisibility: MutableLiveData<Boolean> = MutableLiveData()
+    private val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
 
     fun contactsResult(): LiveData<List<Contact>> = contactsResult
     fun contactsError(): LiveData<String> = contactsError
-    fun loadingVisibility(): MutableLiveData<Boolean> = loadingVisibility
+    fun loadingVisibility(): MutableLiveData<Int> = loadingVisibility
 
     fun fetchContacts() {
         networkSubscription = contactsRepository.getContactList()
@@ -52,11 +51,11 @@ class ContactListViewModel @Inject constructor(
 
 
     private fun hideLoading() {
-        loadingVisibility.value = false
+        loadingVisibility.value = View.GONE
     }
 
     private fun showLoading() {
-        loadingVisibility.value = true
+        loadingVisibility.value = View.VISIBLE
         contactsError.value = null
     }
 

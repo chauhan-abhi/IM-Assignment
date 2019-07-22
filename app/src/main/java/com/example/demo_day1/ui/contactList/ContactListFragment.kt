@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
@@ -24,29 +25,17 @@ class ContactListFragment : Fragment() {
     @Inject
     lateinit var contactsViewModelFactory: ContactsViewModelFactory
     lateinit var contactListViewModel: ContactListViewModel
+    private lateinit var binding: com.example.demo_day1.databinding.FragmentSecondBinding
 
-    private lateinit var rvContact: RecyclerView
-    private lateinit var progressBar: ProgressBar
     val contactList: ArrayList<Contact> = ArrayList()
+    private var contactAdapter = ContactListAdapter(R.layout.contact_list_item, contactList)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_second, container, false)
-        rvContact = view.findViewById(R.id.rv_contact_list)
-        progressBar = view.findViewById(R.id.progressBar)
-
-        //addContacts()
-        rvContact.layoutManager = LinearLayoutManager(context)
-        rvContact.setHasFixedSize(true)
-        rvContact.adapter = ContactListAdapter(R.layout.contact_list_item, contactList)
-        (activity as MainActivity).supportActionBar?.title = "Contacts List"
-
-        //(activity as AppCompatActivity).supportActionBar!!.hide()
-
-        return view
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_second, container, false)
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -56,7 +45,11 @@ class ContactListFragment : Fragment() {
         contactListViewModel = ViewModelProviders.of(this, contactsViewModelFactory).get(
             ContactListViewModel::class.java
         )
+        binding.rvContactList.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        binding.rvContactList.setHasFixedSize(true)
+        binding.rvContactList.adapter = contactAdapter
         observeViewModelResults()
+        binding.viewModel = contactListViewModel
         fetchContactsFromViewModel()
     }
 
@@ -67,36 +60,16 @@ class ContactListFragment : Fragment() {
 
     private fun observeViewModelResults() {
         contactListViewModel.contactsResult().observe(this, Observer<List<Contact>> {
-            if (it != null) {
-                ContactListAdapter(R.layout.contact_list_item, it).let { adapter ->
-                    rvContact.adapter = adapter
-                    adapter.setData(it)
-                }
+            if (!it.isNullOrEmpty()) {
+                contactAdapter.setData(it)
             }
         })
 
         contactListViewModel.contactsError().observe(this, Observer<String> {
-            if (it != null) {
-                showSnackBar(activity as FragmentActivity, "Some error")
+            if (!it.isNullOrEmpty()) {
+                showSnackBar(activity as FragmentActivity, R.string.contacts_error.toString())
             }
         })
 
-        contactListViewModel.loadingVisibility().observe(this, Observer<Boolean> {
-            if (it == false) progressBar.visibility = View.GONE else progressBar.visibility = View.VISIBLE
-        })
-
     }
-
-    /*  override fun onResume() {
-          super.onResume()
-          if (isNetworkStatusAvailable(context!!)) {
-              FetchUserAsyncTask().execute()
-          } else {
-              progressBar.visibility = View.GONE
-              //Toast.makeText(activity, "No internet connection", Toast.LENGTH_LONG).show()
-              showSnackBar(activity as FragmentActivity, "No Internet Connection")
-          }
-      }*/
-
-
 }
