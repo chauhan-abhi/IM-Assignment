@@ -5,6 +5,15 @@
             android:id="@+id/nav_graph"
             app:startDestination="@id/homeFragment">
     
+    
+    <fragment
+        android:id="@+id/contactsFragment"
+        android:name="com.example.demo_day1.ui.contactList.ContactListFragment"
+        android:label="Contact List"
+        tools:layout="@layout/fragment_second">
+    
+    </fragment>
+    
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.demo_day1.fragments.HomeFragment"
@@ -24,6 +33,7 @@
         />
         <action android:id="@+id/action_homeFragment_to_fourthFragment"
                 app:destination="@id/fourthFragment"/>
+        <action android:id="@+id/action_homeFragment_to_contactsFragment" app:destination="@id/contactsFragment"/>
     </fragment>
     
     <fragment
@@ -35,7 +45,7 @@
     </fragment>
     <fragment
         android:id="@+id/secondFragment"
-        android:name="com.example.demo_day1.ui.contactList.SecondFragment"
+        android:name="com.example.demo_day1.fragments.SecondFragment"
         android:label="Second Fragment"
         tools:layout="@layout/fragment_second"/>
     

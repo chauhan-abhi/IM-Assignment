@@ -12,6 +12,12 @@
                 android:id="@+id/second"
                 android:icon="@drawable/ic_add_shopping_cart_white_24dp"
                 android:title="Second" />
+    
+    
+        <item
+            android:id="@+id/third"
+            android:icon="@drawable/ic_add_shopping_cart_white_24dp"
+            android:title="MVVM Contacts" />
         
         <item
                 android:id="@+id/fourth"

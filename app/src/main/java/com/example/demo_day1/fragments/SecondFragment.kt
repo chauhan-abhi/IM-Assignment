@@ -1,4 +1,4 @@
-package com.example.demo_day1.ui.contactList
+package com.example.demo_day1.fragments
 
 
 import android.os.AsyncTask
@@ -59,21 +59,6 @@ class SecondFragment : Fragment() {
             progressBar.visibility = View.GONE
             //Toast.makeText(activity, "No internet connection", Toast.LENGTH_LONG).show()
             showSnackBar(activity as FragmentActivity, "No Internet Connection")
-        }
-    }
-
-    private fun addContacts() {
-        //val contactsJSON = readJSONFromAsset(activity!!.applicationContext)
-
-        for (i in 1..9) {
-            contactList.add(
-                Contact(
-                    "AAAA$i",
-                    "aaaa@aaaa$i.com",
-                    "999064924$i",
-                    "https://avatars1.githubusercontent.com/u/20797673?s=460&v=4"
-                )
-            )
         }
     }
 

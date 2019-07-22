@@ -1,6 +1,7 @@
 package com.example.demo_day1.di
 
 import com.example.demo_day1.MyApplication
+import com.example.demo_day1.ui.contactList.ContactListFragment
 import dagger.Component
 import javax.inject.Singleton
 
@@ -8,6 +9,7 @@ import javax.inject.Singleton
 @Component(modules = [AppModule::class])
 interface AppComponent {
     fun inject(app: MyApplication)
+    fun inject(contactsListFragment: ContactListFragment)
 
     @Component.Builder
     interface Builder {

@@ -22,14 +22,15 @@ class ContactListViewModel @Inject constructor(
 
     private val contactsResult: MutableLiveData<List<Contact>> = MutableLiveData()
     private val contactsError: MutableLiveData<String> = MutableLiveData()
-    private val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
+    private val loadingVisibility: MutableLiveData<Boolean> = MutableLiveData()
 
     fun contactsResult(): LiveData<List<Contact>> = contactsResult
     fun contactsError(): LiveData<String> = contactsError
-    fun loadingVisibility(): MutableLiveData<Int> = loadingVisibility
+    fun loadingVisibility(): MutableLiveData<Boolean> = loadingVisibility
 
-    private fun fetchContacts() {
-        networkSubscription = contactsRepository.getContactList().subscribeOn(Schedulers.io())
+    fun fetchContacts() {
+        networkSubscription = contactsRepository.getContactList()
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { showLoading() }
             .doOnTerminate { hideLoading() }
@@ -51,11 +52,11 @@ class ContactListViewModel @Inject constructor(
 
 
     private fun hideLoading() {
-        loadingVisibility.value = View.GONE
+        loadingVisibility.value = false
     }
 
     private fun showLoading() {
-        loadingVisibility.value = View.VISIBLE
+        loadingVisibility.value = true
         contactsError.value = null
     }
 

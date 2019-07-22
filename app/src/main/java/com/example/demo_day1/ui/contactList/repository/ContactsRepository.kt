@@ -7,7 +7,6 @@ import com.example.demo_day1.data.remote.ApiInterface
 import com.example.demo_day1.data.remote.model.Contact
 import com.example.demo_day1.utils.AppUtils
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
@@ -20,17 +19,17 @@ class ContactsRepository @Inject constructor(
     fun getContactList(): Observable<List<Contact>> {
         val hasConnection = appUtils.isConnectedToInternet()
         return if (hasConnection)
-            Observable.concatArrayEagerDelayError(
-                getContactsFromApi(),
-                getContactsFromDb()
-            )
+            getContactsFromApi()
         else
             return getContactsFromDb()
     }
 
     private fun getContactsFromApi(): Observable<List<Contact>> {
         return api.getContacts()
-            .filter { it.isNotEmpty() }
+            .filter {
+                Log.e("FETCHAPI", "hereeee")
+                it.isNotEmpty()
+            }
             .doOnNext {
                 Log.d("CONTACTS_API", "Dispatching ${it.size} contacts from API...")
                 storeContactsInDb(it)
@@ -49,7 +48,10 @@ class ContactsRepository @Inject constructor(
 
     @SuppressLint("CheckResult")
     private fun storeContactsInDb(contactList: List<Contact>) {
-        Observable.fromCallable { contactsDao.insertAll(contactList) }
+        Observable.fromCallable {
+            contactsDao.deleteAll()
+            contactsDao.insertAll(contactList)
+        }
             .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.io())
             .subscribe {
