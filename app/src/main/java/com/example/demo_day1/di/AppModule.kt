@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.room.Room
 import com.example.demo_day1.data.db.room_contactsdb.ContactsDao
-import com.example.demo_day1.data.db.room_contactsdb.ContactsDb
+import com.example.demo_day1.data.db.room_contactsdb.AppDb
 import com.example.demo_day1.data.remote.ApiInterface
 import dagger.Module
 import dagger.Provides
@@ -54,12 +54,12 @@ class AppModule(private var application: Application) {
 
     @Provides
     @Singleton
-    fun providesDb(app: Application): ContactsDb = Room
-        .databaseBuilder(app, ContactsDb::class.java, "contacts.db")
+    fun providesDb(app: Application): AppDb = Room
+        .databaseBuilder(app, AppDb::class.java, "contacts.db")
         .fallbackToDestructiveMigration()
         .build()
 
     @Provides
     @Singleton
-    internal fun providesContactsDao(db: ContactsDb): ContactsDao = db.contactsDao()
+    internal fun providesContactsDao(db: AppDb): ContactsDao = db.contactsDao()
 }

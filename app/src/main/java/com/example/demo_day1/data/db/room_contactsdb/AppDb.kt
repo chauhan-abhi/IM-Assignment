@@ -5,6 +5,6 @@ import androidx.room.RoomDatabase
 import com.example.demo_day1.data.remote.model.Contact
 
 @Database(entities = [Contact::class], version = 1)
-abstract class ContactsDb: RoomDatabase() {
+abstract class AppDb: RoomDatabase() {
     abstract fun contactsDao(): ContactsDao
 }
