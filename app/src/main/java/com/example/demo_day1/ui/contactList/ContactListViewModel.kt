@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.demo_day1.R
 import com.example.demo_day1.data.remote.model.Contact
-import com.example.demo_day1.di.Injector
 import com.example.demo_day1.ui.contactList.repository.ContactsRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -28,8 +27,9 @@ class ContactListViewModel @Inject constructor(
     fun contactsError(): LiveData<String> = contactsError
     fun loadingVisibility(): MutableLiveData<Int> = loadingVisibility
 
-    private fun fetchContacts() {
-        networkSubscription = contactsRepository.getContactList().subscribeOn(Schedulers.io())
+    fun fetchContacts() {
+        networkSubscription = contactsRepository.getContactList()
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { showLoading() }
             .doOnTerminate { hideLoading() }

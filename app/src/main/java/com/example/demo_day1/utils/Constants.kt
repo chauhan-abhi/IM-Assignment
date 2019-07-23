@@ -8,4 +8,4 @@ val MOBILE_KEY = "mobile"
 val PASSWORD_KEY = "password"
 val PROFILE_PIC_URI = "profile-pic"
 var PRIVATE_MODE = 0
-val REMOTE_URL = "http://www.mocky.io/v2/5d2865722c0000e3393ed9fe"
+val REMOTE_URL = "http://www.mocky.io/v2/"

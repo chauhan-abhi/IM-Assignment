@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity(),
                 navController.navigate(R.id.firstFragment, bundle)
             }
             R.id.second -> navController.navigate(R.id.secondFragment)
-            //R.id.third -> navController.navigate(R.id.thirdFragment)
+            R.id.third -> navController.navigate(R.id.contactsFragment)
             R.id.fourth -> {
                 navController.navigate(R.id.fourthFragment, bundle)
             }

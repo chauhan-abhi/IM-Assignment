@@ -26,6 +26,9 @@ android {
     androidExtensions {
         experimental = true
     }
+    dataBinding {
+        enabled = true
+    }
     sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/'] } }
     compileOptions {
         targetCompatibility JavaVersion.VERSION_1_8
@@ -78,7 +81,7 @@ dependencies {
 
 
     implementation "androidx.room:room-runtime:$room_version"
-    annotationProcessor "androidx.room:room-compiler:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-rxjava2:$room_version"
 
     // runtime permission
