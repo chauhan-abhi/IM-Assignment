@@ -30,7 +30,7 @@ class ContactListViewModel @Inject constructor(
     fun fetchContacts() {
         networkSubscription = contactsRepository.getContactList()
             .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+            .observeOn(AndroidSchedulers.mainThread(), true)
             .doOnSubscribe { showLoading() }
             .doOnTerminate { hideLoading() }
             .debounce(400, TimeUnit.MILLISECONDS)
@@ -42,21 +42,22 @@ class ContactListViewModel @Inject constructor(
 
 
     private fun setContactsLiveData(contactsList: List<Contact>) {
-        contactsResult.value = contactsList
+        contactsResult.postValue(contactsList)
     }
 
     private fun onContactsError() {
-        contactsError.value = R.string.contacts_error.toString()
+        contactsError.postValue(R.string.contacts_error.toString())
+        hideLoading()
     }
 
 
     private fun hideLoading() {
-        loadingVisibility.value = View.GONE
+        loadingVisibility.postValue(View.GONE)
     }
 
     private fun showLoading() {
-        loadingVisibility.value = View.VISIBLE
-        contactsError.value = null
+        loadingVisibility.postValue(View.VISIBLE)
+        contactsError.postValue(null)
     }
 
     override fun onCleared() {

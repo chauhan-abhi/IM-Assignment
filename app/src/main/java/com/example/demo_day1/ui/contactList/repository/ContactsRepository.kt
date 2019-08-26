@@ -19,29 +19,34 @@ class ContactsRepository @Inject constructor(
     fun getContactList(): Observable<List<Contact>> {
         val hasConnection = appUtils.isConnectedToInternet()
         return if (hasConnection)
-            getContactsFromApi()
+            Observable.concat(
+                getContactsFromDb().subscribeOn(Schedulers.io()),
+                getContactsFromApi().subscribeOn(Schedulers.io()))
         else
-            return getContactsFromDb()
+            getContactsFromDb()
     }
 
     private fun getContactsFromApi(): Observable<List<Contact>> {
-        return api.getContacts()
-            .filter {
-                Log.e("FETCHAPI", "hereeee")
-                it.isNotEmpty()
-            }
-            .doOnNext {
-                Log.d("CONTACTS_API", "Dispatching ${it.size} contacts from API...")
-                storeContactsInDb(it)
-            }
+            return api.getContacts()
+                .filter {
+                    Log.e("FETCHAPI", "hereeee")
+                    it.isNotEmpty()
+                }
+                .doOnNext {
+                    Log.d("CONTACTS_API", "Dispatching ${it.size} contacts from API...")
+                    storeContactsInDb(it)
+                }
     }
 
     private fun getContactsFromDb(): Observable<List<Contact>> {
         return contactsDao.getContacts()
-            .filter { it.isNotEmpty() }
+            //.filter { it.isNotEmpty() }
             .toObservable()
             .doOnNext {
                 Log.d("CONTACTS_DB", "Dispatching ${it.size} contacts from DB...")
+            }
+            .doOnError {
+                Log.d("CONTACTS_DB", "No item from DB...")
             }
 
     }
