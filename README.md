@@ -8,7 +8,7 @@ This assignment implements core Android functionalities such as :
 - Async Tasks
 
 Further advanced implementations added:
-- MVVM architecture in [ContactListFragment](https://github.com/chauhan-abhi/IM-Assignment/blob/master/app/src/main/java/com/example/demo_day1/ui/contactList/ContactListFragment.kt)
+- [MVVM architecture](https://developer.android.com/jetpack/docs/guide) in [ContactListFragment](https://github.com/chauhan-abhi/IM-Assignment/blob/master/app/src/main/java/com/example/demo_day1/ui/contactList/ContactListFragment.kt)
 - [RxJava](https://github.com/ReactiveX/RxJava)
 - [Dagger](https://github.com/google/dagger)
 - [Retrofit](https://github.com/square/retrofit)
