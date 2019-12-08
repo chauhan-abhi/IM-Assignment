@@ -22,14 +22,4 @@ Repository implementation for chaining multiple data sources:
 - Used concat operator with delayedError to combine observables from local database and remote service in 
 [ContactsRepository](https://github.com/chauhan-abhi/IM-Assignment/blob/master/app/src/main/java/com/example/demo_day1/ui/contactList/repository/ContactsRepository.kt)
 
-```kotlin
- fun getContactList(): Observable<List<Contact>> {
-        val hasConnection = appUtils.isConnectedToInternet()
-        return if (hasConnection)
-            Observable.concat(
-                getContactsFromDb().subscribeOn(Schedulers.io()),
-                getContactsFromApi().subscribeOn(Schedulers.io()))
-        else
-            getContactsFromDb()
-    }
-```
+<img src = "https://github.com/chauhan-abhi/IM-Assignment/blob/master/carbon.png">
