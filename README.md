@@ -23,3 +23,6 @@ Repository implementation for chaining multiple data sources:
 [ContactsRepository](https://github.com/chauhan-abhi/IM-Assignment/blob/master/app/src/main/java/com/example/demo_day1/ui/contactList/repository/ContactsRepository.kt)
 
 <img src = "https://github.com/chauhan-abhi/IM-Assignment/blob/master/carbon.png">
+
+<b>API used:</b>
+- https://www.mocky.io/ (key may become obselete with time)
